@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Citychurch RSVP </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #574fd6;
+        }
+
+        #confirmation {
+            margin-top: 16px;
+            text-align: center;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .event-details {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #555;
+        }
+
+        .event-details p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+      <h1> You're Invited! </h1>
+
+      <div class="event-details">
+        <p id="eventName"></p>
+        <p id="eventDateTime"></p>
+        <p id="eventLocation"></p>
+      </div>
+        
+
+      <form>
+        <label for="name"> Your Name:</label>
+        <input type="text" id="name" name="name">
+        <br><br>
+
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" name="email">
+
+        <label for="attending"> Will you attend?</label>
+        <select id="attending" name="attending">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="maybe">Maybe</option>
+        </select>
+        <br><br>
+
+        <div id="guestsContainer">
+            <label for="guests">Number of Guests (including you):</label>
+            <input type="number" id="guests" name="guests" min="1" max="10" value="1">
+        </div>
+        <br><br>
+
+        <button type="submit">Submit RSVP</button>
+
+    </form>
+    <div id="confirmation"></div>
+
+  </div>
+
+<script>
+    const eventDetails = {
+        name: "Citychurch Appreciation Dinner",
+        dateTime: "Thursday, September 24, 2026 at 6:00 PM",
+        location: "205 S Polk St. Amarillo, TX 79118"
+    };
+
+    document.getElementById('eventName').textContent = eventDetails.name;
+    document.getElementById('eventDateTime').textContent = eventDetails.dateTime;
+    document.getElementById('eventLocation').textContent = 'Location: ' + eventDetails.location;
+
+    const form = document.querySelector('form');
+    const confirmation = document.getElementById('confirmation');
+    const attendingField = document.getElementById('attending')
+    const guestsContainer = document.getElementById('guestsContainer');
+
+    attendingField.addEventListener('change', function() {
+        if (attendingField.value === 'no') {
+            guestsContainer.style.display = 'none';
+        } else {
+            guestsContainer.style.display = 'block';
+        }
+    });
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const attending = document.getElementById('attending').value;
+        const guests = document.getElementById('guests').value;
+
+        let message = 'Thanks for RSVPing, ' + name + ' ! ';
+
+        if (attending ==='yes') {
+        message += 'We are excited you will be joining us with ' + guests + ' guest(s). A confirmation will go to ' + email + '.';
+    } else if (attending === 'no') {
+      message += 'Sorry you cannot make it - we will miss you!';
+    } else {
+        message += 'We will keep an eye out for your final answer!';
+    }
+
+    confirmation.textContent = message;
+  });
+</script>
+</body>
+</html>
