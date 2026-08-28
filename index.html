@@ -116,7 +116,7 @@
     const eventDetails = {
         name: "Citychurch Appreciation Dinner",
         dateTime: "Thursday, September 24, 2026 at 6:00 PM",
-        location: "205 S Polk St. Amarillo, TX 79118"
+        location: "205 S Polk St. Amarillo, TX 79101"
     };
 
     document.getElementById('eventName').textContent = eventDetails.name;
@@ -143,16 +143,40 @@
         const email = document.getElementById('email').value;
         const attending = document.getElementById('attending').value;
         const guests = document.getElementById('guests').value;
+        
+        fetch('https://formspree.io/f/mbgjrvyl', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                attending: attending,
+                guests: guests
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('RSVP sent successfully!');
+            } else {
+                console.log('Formspree rejected it, status:', response.status);
+            }
+        })
+        .catch(function (error) {
+            console.error('Network error:', error);
+        });
 
         let message = 'Thanks for RSVPing, ' + name + ' ! ';
 
         if (attending ==='yes') {
         message += 'We are excited you will be joining us with ' + guests + ' guest(s). A confirmation will go to ' + email + '.';
-    } else if (attending === 'no') {
-      message += 'Sorry you cannot make it - we will miss you!';
-    } else {
+        } else if (attending === 'no') {
+       message += 'Sorry you cannot make it - we will miss you!';
+        } else {
         message += 'We will keep an eye out for your final answer!';
-    }
+     }
 
     confirmation.textContent = message;
   });
